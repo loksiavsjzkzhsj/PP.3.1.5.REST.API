@@ -32,8 +32,8 @@ public class Test {
         user.setFirstName("admin");
         user.setAge(30);
         user.setLastName("Adminovich");
-        user.setEmail("admin");
-        user.setPassword("admin");
+        user.setEmail("admin@mail.ru");
+        user.setPassword("123");
         user.addRole(adminRole);
         user.addRole(userRole);
 
@@ -41,8 +41,8 @@ public class Test {
         user1.setFirstName("user");
         user1.setAge(36);
         user1.setLastName("Userevich");
-        user1.setEmail("user");
-        user1.setPassword("user");
+        user1.setEmail("user@mail.ru");
+        user1.setPassword("user123");
         user1.addRole(userRole);
 
         userService.create(user);

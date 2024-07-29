@@ -18,7 +18,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "role")
     private String name;
 
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
@@ -56,7 +56,7 @@ public class Role implements GrantedAuthority {
     }
 
 
-    public void addUser(User user) {
+    public void setUser(User user) {
         if (users == null) {
             users = new ArrayList<>();
         }

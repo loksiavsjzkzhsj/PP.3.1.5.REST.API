@@ -1,14 +1,291 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!doctype html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+
+
 <head>
-    <title>Spring Security Example</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Index</title>
+
+
+
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
-<br/>
-<input type = "button" value="Login"
-       onclick="window.location.href = '/login'">
+    <div class="container-fluid bg-light">
+        <div class="row ">
+            <div class="col-md-12 bg-dark text-white">
+                <nav class="navbar navbar-dark bg-dark">
+                    <span class="navbar-text-white" >
+                        <span th:text="${#authentication.name}">Bob</span>
+                        with roles: <span id="role" ><span th:each="role : ${#authentication.authorities}"  th:text="${role.getAuthority().replace('ROLE_',' ')}">[ROLE_USER, ROLE_ADMIN]</span></span>
+                    </span>
+                    <a class="nav-item text-white nav-link  mr-sm-2 " href="/logout" >Logout <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-door-closed" viewBox="0 0 16 16">
+                        <path d="M3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2zm1 13h8V2H4v13z"/>
+                        <path d="M9 9a1 1 0 1 0 2 0 1 1 0 0 0-2 0z"/>
+                    </svg></a>
+                </nav>
+            </div>
+        </div>
 
+        <div class="row ">
+            <div class="col-md-12 bg-white">
+                <br/>
+            </div>
+        </div>
+
+
+        <div class="row ">
+            <div class="col-md-2 bg-white">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link" id="v-pills-admin-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-admin" aria-selected="false">Admin</a>
+
+                    <a class="nav-link active" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="true">User</a>
+                </div>
+            </div>
+
+
+            <div class="col-md-10 bg-white ">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div sec:authorize="hasRole('ROLE_ADMIN')" class="tab-pane fade " id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <h1>Admin panel <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-laptop" viewBox="0 0 16 16">
+                            <path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5h11zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2h-11zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5z"/>
+                        </svg></h1>
+                        <div class="card ">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="users" aria-selected="true">Users table</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="new-user-tab" data-toggle="tab" href="#new-user" role="tab" aria-controls="new-user" aria-selected="false">New user</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="card-body p-0">
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
+                                        <h5>
+                                        <div class="w-auto p-3 border-bottom bg-light">All users <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                                            <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+                                        </svg></div>
+                                        </h5>
+                                        <table class="table table-striped ">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">First name</th>
+                                                <th scope="col">Last name</th>
+                                                <th scope="col">Age</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Role</th>
+                                                <th scope="col">Edit</th>
+                                                <th scope="col">Delete</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="allUsersTable">
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="new-user" role="tabpanel" aria-labelledby="new-user-tab">
+                                        <h5 class="w-100 p-3  bg-light border-bottom ">Add new user <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                                            <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+                                        </svg></h5>
+                                        <div class="row justify-content-center">
+                                            <div class=" col-6 text-center">
+
+                                                <form id="newUserForm" action="#" method="post">
+                                                    <div class="form-group">
+                                                        <label for="firstNameInput">First name</label>
+                                                        <input type="text" class="form-control" id="firstNameInput" name="firstName"
+                                                               placeholder="First name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="lastNameInput">Last name</label>
+                                                        <input type="text" class="form-control" id="lastNameInput" name="lastName"
+                                                               placeholder="Last name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ageInput">Age</label>
+                                                        <input type="number" class="form-control" id="ageInput" name="age"
+                                                               placeholder="Age">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="emailInput">Email</label>
+                                                        <input type="email" class="form-control" id="emailInput" name="email"
+                                                               placeholder="Email">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="passwordInput">Password</label>
+                                                        <input type="password" class="form-control" id="passwordInput" name="password"
+                                                               placeholder="Password">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="roleSelect">Role</label>
+                                                        <select multiple class="form-control" size="2" id="roleSelect" name="roles">
+                                                            <option value="ROLE_ADMIN" >ADMIN</option>
+                                                            <option value="ROLE_USER" selected>USER</option>
+                                                        </select>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success">Add new user</button>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade show active" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+                        <h2>
+                            User information-page <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
+                            <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5ZM9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8Zm1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Z"/>
+                            <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12V4Z"/>
+                        </svg>
+                        </h2>
+                        <div class="card">
+                            <h5 class="card-header">
+                                About user
+                            </h5>
+                            <div class="card-body">
+                                <table class="table table-hover bg-white ">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">First name</th>
+                                        <th scope="col">Last name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:object="${user}">
+
+                                        <td th:text="*{id}">ID</td>
+                                        <td th:text="*{firstName}">First name</td>
+                                        <td th:text="*{lastName}">Last name</td>
+                                        <td th:text="*{age}">Age</td>
+                                        <td th:text="*{email}">Email</td>
+                                        <td>
+                              <span th:each="r:*{roles}">
+                                 <span th:text="${r.getName().replace('ROLE_','')}">role</span>
+                              </span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+            <!-- Модальное окно -->
+    <div class="modal fade" id="btnModal" tabindex="-1" role="dialog" aria-labelledby="btnModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="btnModalLabel">Modal title<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                    </svg></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+           <!-- Форма для редактирования юзера -->
+                    <form id="userForm" action="">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="idUpdate">ID</label>
+                                <input readonly type="text" class="form-control" id="idUpdate" name="id"
+                                       placeholder="id">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="firstNameUpdate">First name</label>
+                                <input type="text" class="form-control" id="firstNameUpdate" name="firstName"
+                                       placeholder="First name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastNameUpdate">Last name</label>
+                                <input  type="text" class="form-control" id="lastNameUpdate" name="lastName"
+                                        placeholder="Last name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ageUpdate">Age</label>
+                                <input  type="number" class="form-control" id="ageUpdate" name="age"
+                                        placeholder="Age">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emailUpdate">Email</label>
+                                <input  type="email" class="form-control" id="emailUpdate" name="email"
+                                        placeholder="Email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="passwordUpdate">Password</label>
+                                <input type="password" class="form-control" id="passwordUpdate" name="password"
+                                       placeholder="Password">
+                            </div>
+
+                            <div class="form-select">
+                                <label for="roleUpdate">Role</label>
+                                <select multiple class="form-control" size="2" id="roleUpdate" name="roles">
+                                    <option value="ROLE_ADMIN">ADMIN</option>
+                                    <option value="ROLE_USER" selected>USER</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script sec:authorize="hasRole('ROLE_ADMIN')" type="text/javascript" src="../static/admin.js" th:src="@{admin.js}" async></script>
 
 </body>
 </html>

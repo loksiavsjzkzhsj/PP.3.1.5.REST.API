@@ -5,6 +5,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,14 +21,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
     private String firstName;
 
+    @NotEmpty(message = "Last name should not be empty")
+    @Size(min = 2, max = 30, message = "Last name should be between 2 and 30 characters")
     private String lastName;
 
+    @Min(value = 0, message = "Age should be greater then 0")
     private Integer age;
 
+    @Column(unique = true)
+    @Email
+    @NotEmpty(message = "Email should not be empty")
     private String email;
 
+    @NotEmpty(message = "Password should not be empty")
     private String password;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
@@ -36,13 +49,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String firstName, String lastName, Integer age, String email, String password, List<Role> roles) {
+    public User(String firstName, String lastName, Integer age, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.email = email;
         this.password = password;
-        this.roles = roles;
     }
 
     @Override
