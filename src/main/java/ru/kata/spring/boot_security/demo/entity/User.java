@@ -29,8 +29,8 @@ public class User implements UserDetails {
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_roles",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
     public User() {
@@ -84,7 +84,8 @@ public class User implements UserDetails {
     public void setId(Long id) {
         this.id = id;
     }
-// поменял возращаемое поле с username на email
+
+    // поменял возращаемое поле с username на email
     public String getFirstName() {
         return this.firstName;
     }
