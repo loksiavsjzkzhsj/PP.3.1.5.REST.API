@@ -11,11 +11,6 @@ import ru.kata.spring.boot_security.demo.entity.User;
 @Controller
 public class UserController {
 
-    @GetMapping("/welcome")
-    public String welcome(Model model) {
-        return "welcome";
-    }
-
     @GetMapping("/user")
     public String userPage(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
